@@ -3,10 +3,9 @@ from starlette.middleware.cors import CORSMiddleware
 from database import SessionLocal
 from sqlalchemy.orm import Session
 from schemas import UserRegisterSchema
-from server.routers import adminCategory
 import services
 import fastapi.security as _security
-from routers import admin, photos, adminPhotos, gallery
+from routers import admin, photos, adminPhotos, gallery, adminCategory
 
 def get_db():
     db = SessionLocal()
@@ -17,7 +16,7 @@ def get_db():
 
 def start_application():
     app = FastAPI()
-    origins = ["http://localhost:3000", "https://medic-web-sigma.vercel.app"]
+    origins = ["http://localhost:3000"]
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,

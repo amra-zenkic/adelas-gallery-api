@@ -40,6 +40,16 @@ async def add_category(category: CategoryUpload, db: SessionLocal = Depends(get_
     db.refresh(new_category)
     return {"id_category": new_category.id_category}
 
+@router.put("/update/{category_id}")
+async def update_category(category_id: int, categoryUpload: CategoryUpload, db: SessionLocal = Depends(get_db)):
+    category = db.query(Category).filter(Category.id_category == category_id).first()
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+    category.category_name = categoryUpload.category_name
+    db.commit()
+    db.refresh(category)
+    return category
+
 @router.delete("/delete/{category_id}")
 async def delete_category(category_id: int, db: SessionLocal = Depends(get_db)):
     category = db.query(Category).filter(Category.id_category == category_id).first()
