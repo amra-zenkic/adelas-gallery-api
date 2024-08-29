@@ -3,9 +3,10 @@ from starlette.middleware.cors import CORSMiddleware
 from database import SessionLocal
 from sqlalchemy.orm import Session
 from schemas import UserRegisterSchema
+from server.routers import adminCategory
 import services
 import fastapi.security as _security
-from routers import admin, photos, category, adminPhotos, gallery
+from routers import admin, photos, adminPhotos, gallery
 
 def get_db():
     db = SessionLocal()
@@ -30,7 +31,7 @@ app = start_application()
 
 app.include_router(admin.router)
 app.include_router(photos.router)
-app.include_router(category.router)
+app.include_router(adminCategory.router)
 app.include_router(adminPhotos.router)
 app.include_router(gallery.router)
 
