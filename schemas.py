@@ -6,7 +6,19 @@ class UserRegisterSchema(BaseModel):
     username: str
     email: EmailStr
     password: str
+    description: str | None = None
     photo_path: str | None = None
+    instagram_url: str | None = None
+    facebook_url: str | None = None
+    linkedin_url: str | None = None
+
+    class Config:
+        orm_mode = True
+
+class UserEditSchema(BaseModel):
+    username: str
+    email: EmailStr
+    description: str | None = None
     instagram_url: str | None = None
     facebook_url: str | None = None
     linkedin_url: str | None = None
@@ -33,6 +45,7 @@ class GalleryAndPhotoUpload(BaseModel):
     list_id_gallery: str
 
 class AdminDetails(BaseModel):
+    id_user: int
     username: str
     email: EmailStr
     description: str | None = None
@@ -40,3 +53,11 @@ class AdminDetails(BaseModel):
     instagram_url: str | None = None
     facebook_url: str | None = None
     linkedin_url: str | None = None
+
+class UserChangePassword(BaseModel):
+    current_password: str
+    new_password: str
+
+class ServicesRequest(BaseModel):
+    service_name: str
+    description: str | None = None

@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from schemas import UserRegisterSchema
 import services
 import fastapi.security as _security
-from routers import admin, photos, adminPhotos, gallery, adminCategory
+from routers import admin, photos, adminPhotos, gallery, adminCategory, adminServices
+from fastapi.staticfiles import StaticFiles
 
 def get_db():
     db = SessionLocal()
@@ -28,11 +29,14 @@ def start_application():
 
 app = start_application()
 
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 app.include_router(admin.router)
 app.include_router(photos.router)
 app.include_router(adminCategory.router)
 app.include_router(adminPhotos.router)
 app.include_router(gallery.router)
+app.include_router(adminServices.router)
 
 @app.get("/")
 async def root():

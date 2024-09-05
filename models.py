@@ -70,7 +70,6 @@ class Service(Base):
     id_service = Column(Integer, primary_key=True, index=True)
     service_name = Column(String(300), nullable=False)
     description = Column(Text)
-    icon = Column(String(500))
 
 
 class Gallery(Base):

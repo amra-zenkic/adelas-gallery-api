@@ -63,8 +63,9 @@ async def get_current_user(
     try:
         payload = _jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
         user = db.query(_models.User).get(payload["id"])
-        print("do user ", user.instagram_url)
+        
         userReturn = _schemas.AdminDetails(
+            id_user=user.id_user,
             username = user.username,
             email = user.email,
             description=user.description,
@@ -73,6 +74,7 @@ async def get_current_user(
             facebook_url = user.facebook_url,
             linkedin_url = user.linkedin_url
         )
+        print("do user ", userReturn.id_user)
         return userReturn
     except Exception as e:
         raise fastapi.HTTPException(

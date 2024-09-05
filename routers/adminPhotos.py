@@ -139,6 +139,10 @@ async def update_photo(photo_id: int, galleries: GalleryAndPhotoUpload, db: Sess
         
     return {"message": "Photo updated successfully"}
 
+@router.get('/count')
+async def get_count_photos(db: SessionLocal = Depends(get_db)):
+    photos = db.query(Photo).count()
+    return photos
 
 @router.delete("/photo/delete/{photo_id}")
 async def delete_photo(photo_id: int, db: SessionLocal = Depends(get_db)):

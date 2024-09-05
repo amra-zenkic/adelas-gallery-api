@@ -30,6 +30,11 @@ async def get_all_categories(db: SessionLocal = Depends(get_db)):
     categories = db.query(Category).all()
     return categories
 
+@router.get('/count')
+async def get_count_categories(db: SessionLocal = Depends(get_db)):
+    categories = db.query(Category).count()
+    return categories
+
 @router.post("/add")
 async def add_category(category: CategoryUpload, db: SessionLocal = Depends(get_db)):
     new_category = Category(

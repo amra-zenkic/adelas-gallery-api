@@ -25,6 +25,11 @@ async def get_all_galleries(db: Session = Depends(get_db)):
     gallery = db.query(Gallery).all()
     return gallery
 
+@router.get('/count')
+async def get_count_galleries(db: Session = Depends(get_db)):
+    gallery = db.query(Gallery).count()
+    return gallery
+
 @router.post('/add')
 def add_gallery(request: GalleryUpload, db: Session = Depends(get_db)):
     new_gallery = Gallery(
