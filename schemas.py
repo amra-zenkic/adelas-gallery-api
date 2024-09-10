@@ -30,7 +30,7 @@ class PhotoUpload(BaseModel):
     title: str | None = None
     description: str | None = None
     location: str | None = None
-    date: Optional[date] = None
+    date: Optional[str] = None
 
 class CategoryUpload(BaseModel):
     category_name: str
@@ -61,3 +61,31 @@ class UserChangePassword(BaseModel):
 class ServicesRequest(BaseModel):
     service_name: str
     description: str | None = None
+
+
+class PhotoBase(BaseModel):
+    id_photo: int
+    photo_path: str
+    title: Optional[str]
+    description: Optional[str]
+    location: Optional[str]
+    date: Optional[date]
+
+    class Config:
+        orm_mode = True
+
+class GalleryBase(BaseModel):
+    id_gallery: int
+    gallery_name: str
+
+    class Config:
+        orm_mode = True
+
+class GalleryAndPhotosBase(BaseModel):
+    id_gallery: int
+    id_photo: int
+    gallery: Optional[GalleryBase]
+    photo: Optional[PhotoBase]
+
+    class Config:
+        orm_mode = True

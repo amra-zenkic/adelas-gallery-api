@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import APIRouter, HTTPException, Depends, File, UploadFile, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from database import SessionLocal
@@ -25,8 +26,10 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+user_dependencies = Annotated[dict, Depends(services.get_current_user)]
+
 @router.get('/all')
-async def get_all_categories(db: SessionLocal = Depends(get_db)):
+async def get_all_categories(user: user_dependencies, db: SessionLocal = Depends(get_db)):
     categories = db.query(Category).all()
     return categories
 
@@ -36,7 +39,7 @@ async def get_count_categories(db: SessionLocal = Depends(get_db)):
     return categories
 
 @router.post("/add")
-async def add_category(category: CategoryUpload, db: SessionLocal = Depends(get_db)):
+async def add_category(category: CategoryUpload, user: user_dependencies,  db: SessionLocal = Depends(get_db)):
     new_category = Category(
         category_name = category.category_name
     )
@@ -46,7 +49,7 @@ async def add_category(category: CategoryUpload, db: SessionLocal = Depends(get_
     return {"id_category": new_category.id_category}
 
 @router.put("/update/{category_id}")
-async def update_category(category_id: int, categoryUpload: CategoryUpload, db: SessionLocal = Depends(get_db)):
+async def update_category(category_id: int, categoryUpload: CategoryUpload, user: user_dependencies, db: SessionLocal = Depends(get_db)):
     category = db.query(Category).filter(Category.id_category == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
@@ -56,7 +59,7 @@ async def update_category(category_id: int, categoryUpload: CategoryUpload, db: 
     return category
 
 @router.delete("/delete/{category_id}")
-async def delete_category(category_id: int, db: SessionLocal = Depends(get_db)):
+async def delete_category(category_id: int, user: user_dependencies, db: SessionLocal = Depends(get_db)):
     category = db.query(Category).filter(Category.id_category == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
